@@ -7,3 +7,9 @@ export function addTodo(text) {
     fireEvent.change(input, { target: { value: text } })
     fireEvent.keyDown(input, { key: "Enter" })
 }
+
+
+export function selectTab(tab) {
+    const tabBtn = screen.getByText(tab)
+    fireEvent.click(tabBtn)
+}
