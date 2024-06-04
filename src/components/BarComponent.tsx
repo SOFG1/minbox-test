@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { TabType } from "../types";
+import { ITodoItem, TabType } from "../types";
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -41,18 +41,20 @@ const StyledTab = styled.button<{ selected: boolean }>`
 `;
 
 interface IProps {
-  itemsLeftCount: number;
+  todos: ITodoItem[];
   tab: TabType;
   onChangeTab: (tab: TabType) => void;
   onClearCompleted: () => void;
 }
 
 export const BarComponent = ({
-  itemsLeftCount,
+  todos,
   tab,
   onChangeTab,
   onClearCompleted,
 }: IProps) => {
+  const itemsLeftCount = todos.filter((t) => !t.completed).length;
+
   return (
     <StyledWrapper>
       <StyledText>{itemsLeftCount} items left</StyledText>

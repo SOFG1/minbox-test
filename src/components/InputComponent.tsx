@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import icon from "../images/arrow.png";
-import { useState } from "react";
+import { memo, useState } from "react";
 
 const StyledWrapper = styled.label`
   display: flex;
@@ -31,7 +31,7 @@ interface IProps {
   onAddItem: (text: string) => void;
 }
 
-export const InputComponent = ({ onAddItem }: IProps) => {
+export const InputComponent = memo(({ onAddItem }: IProps) => {
   const [text, setText] = useState<string>("");
 
   const handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -52,4 +52,4 @@ export const InputComponent = ({ onAddItem }: IProps) => {
       />
     </StyledWrapper>
   );
-};
+});

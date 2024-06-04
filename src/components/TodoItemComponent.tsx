@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import checkedIcon from "../images/checked-icon.png";
 import { ITodoItem } from "../types";
+import { memo } from "react";
 
 const StyledWrapper = styled.div`
   height: 68px;
@@ -40,7 +41,7 @@ interface IProps {
   onChangeCompleted: (id: number) => void;
 }
 
-export const TodoItemComponent = ({ item, onChangeCompleted }: IProps) => {
+export const TodoItemComponent = memo(({ item, onChangeCompleted }: IProps) => {
   return (
     <StyledWrapper onClick={() => onChangeCompleted(item.id)}>
       <StyledCheckbox $completed={item.completed}>
@@ -49,4 +50,4 @@ export const TodoItemComponent = ({ item, onChangeCompleted }: IProps) => {
       <StyledText $completed={item.completed}>{item.text}</StyledText>
     </StyledWrapper>
   );
-};
+});

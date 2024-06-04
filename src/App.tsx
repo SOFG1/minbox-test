@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { InputComponent } from "./components/InputComponent";
 import { TodoItemComponent } from "./components/TodoItemComponent";
 import { BarComponent } from "./components/BarComponent";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ITodoItem, TabType } from "./types";
 
 const StyledWrapper = styled.div`
@@ -35,13 +35,12 @@ function App() {
   const [todos, setTodos] = useState<ITodoItem[]>([]);
   const [tab, setTab] = useState<TabType>("all");
   const currentTabItems = getCurrentTabTodos(todos, tab);
-  const itemsLeftCount = todos.filter((t) => !t.completed).length;
 
-  const handleAddItem = (text: string) => {
+  const handleAddItem = useCallback((text: string) => {
     setTodos((p) => [...p, { id: p.length + 1, text, completed: false }]);
-  };
+  }, []);
 
-  const handleChangeCompleted = (id: number) => {
+  const handleChangeCompleted = useCallback((id: number) => {
     setTodos((p) => {
       return p.map((i) => {
         if (i.id === id) {
@@ -53,7 +52,7 @@ function App() {
         return i;
       });
     });
-  };
+  }, []);
 
   const handleClearCompleted = () => {
     setTodos((p) => p.filter((p) => !p.completed));
@@ -72,7 +71,7 @@ function App() {
           />
         ))}
         <BarComponent
-          itemsLeftCount={itemsLeftCount}
+          todos={todos}
           tab={tab}
           onChangeTab={setTab}
           onClearCompleted={handleClearCompleted}
