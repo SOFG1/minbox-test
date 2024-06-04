@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { InputComponent } from "./components/InputComponent";
 import { TodoItemComponent } from "./components/TodoItemComponent";
 import { BarComponent } from "./components/BarComponent";
-import { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { ITodoItem, TabType } from "./types";
 
 const StyledWrapper = styled.div`
@@ -32,8 +32,8 @@ const getCurrentTabTodos = (list: ITodoItem[], tab: TabType): ITodoItem[] => {
 };
 
 function App() {
-  const [todos, setTodos] = useState<ITodoItem[]>([]);
-  const [tab, setTab] = useState<TabType>("all");
+  const [todos, setTodos] = React.useState<ITodoItem[]>([]);
+  const [tab, setTab] = React.useState<TabType>("all");
   const currentTabItems = getCurrentTabTodos(todos, tab);
 
   const handleAddItem = useCallback((text: string) => {

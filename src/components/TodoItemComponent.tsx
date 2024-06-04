@@ -45,7 +45,7 @@ export const TodoItemComponent = memo(({ item, onChangeCompleted }: IProps) => {
   return (
     <StyledWrapper onClick={() => onChangeCompleted(item.id)}>
       <StyledCheckbox $completed={item.completed}>
-        <img src={checkedIcon} alt="" />
+        {item.completed && <img src={checkedIcon} alt="" />}
       </StyledCheckbox>
       <StyledText $completed={item.completed}>{item.text}</StyledText>
     </StyledWrapper>
