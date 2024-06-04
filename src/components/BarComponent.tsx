@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { TabType } from "../types";
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -28,7 +29,7 @@ const StyledBox = styled.div`
   gap: 18px;
 `;
 
-const StyledTab = styled.button<{active: boolean}>`
+const StyledTab = styled.button<{ selected: boolean }>`
   font-size: 12px;
   color: #7c7c7c;
   font-family: inherit;
@@ -36,19 +37,43 @@ const StyledTab = styled.button<{active: boolean}>`
   background-color: transparent;
   border-radius: 2px;
   border: 0;
-  ${({active}) => active && "border: 1px solid #f6b9b9;"}
+  ${({ selected }) => selected && "border: 1px solid #f6b9b9;"}
 `;
 
-export const BarComponent = () => {
+interface IProps {
+  itemsLeftCount: number;
+  tab: TabType;
+  onChangeTab: (tab: TabType) => void;
+  onClearCompleted: () => void;
+}
+
+export const BarComponent = ({
+  itemsLeftCount,
+  tab,
+  onChangeTab,
+  onClearCompleted,
+}: IProps) => {
   return (
     <StyledWrapper>
-      <StyledText>2 items left</StyledText>
+      <StyledText>{itemsLeftCount} items left</StyledText>
       <StyledBox>
-        <StyledTab active={true}>All</StyledTab>
-        <StyledTab active={false}>Active</StyledTab>
-        <StyledTab active={false}>Completed</StyledTab>
+        <StyledTab selected={tab === "all"} onClick={() => onChangeTab("all")}>
+          All
+        </StyledTab>
+        <StyledTab
+          selected={tab === "active"}
+          onClick={() => onChangeTab("active")}
+        >
+          Active
+        </StyledTab>
+        <StyledTab
+          selected={tab === "completed"}
+          onClick={() => onChangeTab("completed")}
+        >
+          Completed
+        </StyledTab>
       </StyledBox>
-      <StyledButton>Clear completed</StyledButton>
+      <StyledButton onClick={onClearCompleted}>Clear completed</StyledButton>
     </StyledWrapper>
   );
 };

@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { Checkbox } from "../UI/Checkbox";
+import checkedIcon from "../images/checked-icon.png";
+import { ITodoItem } from "../types";
 
 const StyledWrapper = styled.div`
   height: 68px;
@@ -8,26 +9,44 @@ const StyledWrapper = styled.div`
   gap: 29px;
   border-bottom: 1px solid #e9e9e9;
   padding: 0 13px;
+  cursor: pointer;
 `;
 
-const StyledText = styled.p<{ checked: boolean }>`
+const StyledCheckbox = styled.div<{ $completed: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3px;
+  height: 32px;
+  width: 32px;
+  border: 1px solid #f0f0f0;
+  border-radius: 50%;
+  ${({ $completed }) => $completed && "border-color: #78c1b0;"}
+`;
+
+const StyledText = styled.p<{ $completed: boolean }>`
   font-size: 20px;
   line-height: 1;
-  ${({ checked }) =>
-    checked &&
+  ${({ $completed }) =>
+    $completed &&
     `
     color: #dadada;
     text-decoration: line-through;
   `}
 `;
 
-export const TodoItemComponent = () => {
+interface IProps {
+  item: ITodoItem;
+  onChangeCompleted: (id: number) => void;
+}
 
-    
+export const TodoItemComponent = ({ item, onChangeCompleted }: IProps) => {
   return (
-    <StyledWrapper>
-      <Checkbox />
-      <StyledText checked={false}>Тестовое задание</StyledText>
+    <StyledWrapper onClick={() => onChangeCompleted(item.id)}>
+      <StyledCheckbox $completed={item.completed}>
+        <img src={checkedIcon} alt="" />
+      </StyledCheckbox>
+      <StyledText $completed={item.completed}>{item.text}</StyledText>
     </StyledWrapper>
   );
 };

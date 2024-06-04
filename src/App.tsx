@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { InputComponent } from "./components/InputComponent";
 import { TodoItemComponent } from "./components/TodoItemComponent";
 import { BarComponent } from "./components/BarComponent";
+import { useState } from "react";
+import { ITodoItem, TabType } from "./types";
 
 const StyledWrapper = styled.div`
   max-width: 610px;
@@ -21,17 +23,60 @@ const StyledList = styled.div`
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.41);
 `;
 
+const getCurrentTabTodos = (list: ITodoItem[], tab: TabType): ITodoItem[] => {
+  return list.filter((i) => {
+    if (tab === "active" && i.completed) return false;
+    if (tab === "completed" && !i.completed) return false;
+    return true;
+  });
+};
+
 function App() {
+  const [todos, setTodos] = useState<ITodoItem[]>([]);
+  const [tab, setTab] = useState<TabType>("all");
+  const currentTabItems = getCurrentTabTodos(todos, tab);
+  const itemsLeftCount = todos.filter((t) => !t.completed).length;
+
+  const handleAddItem = (text: string) => {
+    setTodos((p) => [...p, { id: p.length + 1, text, completed: false }]);
+  };
+
+  const handleChangeCompleted = (id: number) => {
+    setTodos((p) => {
+      return p.map((i) => {
+        if (i.id === id) {
+          return {
+            ...i,
+            completed: !i.completed,
+          };
+        }
+        return i;
+      });
+    });
+  };
+
+  const handleClearCompleted = () => {
+    setTodos((p) => p.filter((p) => !p.completed));
+  };
+
   return (
     <StyledWrapper>
       <StyledTitle>todos</StyledTitle>
       <StyledList>
-        <InputComponent />
-        <TodoItemComponent />
-        <TodoItemComponent />
-        <TodoItemComponent />
-        <TodoItemComponent />
-        <BarComponent />
+        <InputComponent onAddItem={handleAddItem} />
+        {currentTabItems.map((i) => (
+          <TodoItemComponent
+            item={i}
+            onChangeCompleted={handleChangeCompleted}
+            key={i.id}
+          />
+        ))}
+        <BarComponent
+          itemsLeftCount={itemsLeftCount}
+          tab={tab}
+          onChangeTab={setTab}
+          onClearCompleted={handleClearCompleted}
+        />
       </StyledList>
     </StyledWrapper>
   );
