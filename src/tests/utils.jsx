@@ -13,3 +13,7 @@ export function selectTab(tab) {
     const tabBtn = screen.getByText(tab)
     fireEvent.click(tabBtn)
 }
+
+export function delay(ms) {
+    return new Promise((res) => setTimeout(res, ms))
+}
