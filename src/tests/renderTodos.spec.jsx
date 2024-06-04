@@ -16,7 +16,7 @@ const initialTodos = [
 
 
 describe('App', () => {
-  it('renders the App component', () => {
+  it('renders list of todos', () => {
     const setState = vitest.fn()
     vitest
       .spyOn(React, "useState")
